@@ -13,13 +13,13 @@ class App extends Component {
 			<div className="App">
 				<nav>
 					<NavLink to="/">Home</NavLink>
-					<NavLink to="/">Login</NavLink>
-					<NavLink to="/">Register</NavLink>
+					<NavLink to="/login">Login</NavLink>
+					<NavLink to="/register">Register</NavLink>
 				</nav>
 				<Switch>
 					<Route exact path="/" render={(props) => <Jokes {...props} />} />
-					<Route exact path="/" render={(props) => <Signup {...props} />} />
-					<Route exact path="/" render={(props) => <Signin {...props} />} />
+					<Route exact path="/register" render={(props) => <Signup {...props} />} />
+					<Route exact path="/login" render={(props) => <Signin {...props} />} />
 				</Switch>
 
 				{token ? (
