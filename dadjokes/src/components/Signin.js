@@ -62,6 +62,7 @@ export default class Signin extends Component {
 		return (
 			<div>
 				<form onSubmit={this.register}>
+					<label>username</label>
 					<input
 						type="text"
 						onChange={this.changeHandler}
@@ -69,7 +70,7 @@ export default class Signin extends Component {
 						placeholder="username"
 						value={this.value}
 					/>
-
+					<label>password</label>
 					<input
 						type="text"
 						onChange={this.changeHandler}
