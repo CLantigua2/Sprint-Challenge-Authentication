@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import styled from 'styled-components';
 
 const initialUser = {
 	username: '',
@@ -55,7 +56,9 @@ export default class Signup extends Component {
 	render() {
 		return (
 			<div>
-				<form onSubmit={this.register}>
+				<h1>Signup</h1>
+				<StyledForm onSubmit={this.register}>
+					<label htmlFor="username">username</label>
 					<input
 						type="text"
 						onChange={this.changeHandler}
@@ -64,6 +67,7 @@ export default class Signup extends Component {
 						value={this.value}
 					/>
 
+					<label htmlFor="password">password</label>
 					<input
 						type="text"
 						onChange={this.changeHandler}
@@ -72,9 +76,17 @@ export default class Signup extends Component {
 						value={this.value}
 					/>
 					<input type="submit" />
-				</form>
+				</StyledForm>
 				{this.state.message !== '' ? <h1>{this.state.message}</h1> : null}
 			</div>
 		);
 	}
 }
+
+const StyledForm = styled.form`
+	display: flex;
+	flex-direction: column;
+	width: 400px;
+	margin: 0 auto;
+	padding: 20px;
+`;

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, Switch, NavLink, withRouter } from 'react-router-dom';
+import { Route, NavLink } from 'react-router-dom';
 import Signup from './components/Signup';
 import Signin from './components/Signin';
 import Jokes from './components/Jokes';
@@ -13,18 +13,19 @@ class App extends Component {
 		return (
 			<div className="App">
 				<nav>
-					<NavLink to="/">Home</NavLink>
+					<NavLink to="/" exact>
+						Home
+					</NavLink>
+					&nbsp;|&nbsp;
 					<NavLink to="/login">Login</NavLink>
+					&nbsp;|&nbsp;
 					<NavLink to="/signup">Register</NavLink>
 				</nav>
-
-				<Switch>
-					<Route exact path="/" render={(props) => <Jokes {...props} />} />
-
-					<Route path="/signup" render={(props) => <Signup {...props} />} />
-
-					<Route path="/login" render={(props) => <Signin {...props} />} />
-				</Switch>
+				<main>
+					<Route exact path="/" component={Jokes} />
+					<Route path="/signup" component={Signup} />
+					<Route path="/login" component={Signin} />
+				</main>
 
 				{token ? (
 					<button
@@ -41,4 +42,4 @@ class App extends Component {
 	}
 }
 
-export default withRouter(App);
+export default App;

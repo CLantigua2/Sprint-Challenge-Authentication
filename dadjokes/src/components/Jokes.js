@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { withRouter } from 'react-router';
 
 class Jokes extends Component {
 	constructor(props) {
@@ -67,4 +66,4 @@ class Jokes extends Component {
 	}
 }
 
-export default withRouter(Jokes);
+export default Jokes;
