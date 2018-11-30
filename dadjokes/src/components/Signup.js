@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
+const initialUser = {
+	username: '',
+	password: ''
+};
+
 export default class Signup extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			user: {
-				username: '',
-				password: ''
-			},
+			user: { ...initialUser },
 			message: ''
 		};
 	}
@@ -16,7 +18,7 @@ export default class Signup extends Component {
 	changeHandler = (e) => {
 		const { name, value } = e.target;
 		this.setState({
-			user: { [name]: value }
+			user: { ...this.state.user, [name]: value }
 		});
 	};
 
@@ -31,7 +33,7 @@ export default class Signup extends Component {
 				if (res.status === 201) {
 					this.setState({
 						message: 'Registration successful',
-						user: ''
+						user: { ...initialUser }
 					});
 				}
 			});
@@ -46,17 +48,17 @@ export default class Signup extends Component {
 					<input
 						type="text"
 						onChange={this.changeHandler}
-						name={username}
+						name="username"
 						placeholder="username"
-						value={this.value}
+						value={username}
 					/>
 
 					<input
 						type="text"
 						onChange={this.changeHandler}
-						name={password}
+						name="password"
 						placeholder="password"
-						value={this.value}
+						value={password}
 					/>
 					<input type="submit" />
 				</form>
