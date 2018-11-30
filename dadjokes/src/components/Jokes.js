@@ -49,14 +49,15 @@ class Jokes extends Component {
 	};
 
 	render() {
-		if (this.state.users) {
+		if (this.state.jokes) {
 			return (
 				<div>
-					{this.state.users.map((user) => (
-						<p key={user.id}>
-							{user.username.charAt(0).toUpperCase() + user.username.slice(1)} works in{' '}
-							{user.department.charAt(0).toUpperCase() + user.department.slice(1)}
-						</p>
+					{this.state.jokes.map((joke) => (
+						<div key={joke.id}>
+							<p>{joke.setup}...</p>
+							<p>...{joke.punchline}</p>
+							<p>{joke.type}</p>
+						</div>
 					))}
 				</div>
 			);

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router';
 import axios from 'axios';
 
 const initialUser = {
@@ -11,7 +12,8 @@ export default class Signin extends Component {
 		super(props);
 		this.state = {
 			user: { ...initialUser },
-			message: ''
+			message: '',
+			loggedIn: false
 		};
 	}
 
@@ -29,18 +31,34 @@ export default class Signin extends Component {
 		if (!username || !password) {
 			alert('Please provide a username and password');
 		} else {
-			axios.post('http://localhost:3300/login', this.state.user).then((res) => {
-				if (res.status === 201) {
+			axios
+				.post('http://localhost:3300/api/login', this.state.user)
+				.then((res) => {
+					if (res.status === 201 && res.data) {
+						localStorage.setItem('token', res.data.token);
+						this.setState({
+							user: { ...initialUser },
+							loggedIn: true
+						});
+					} else {
+						throw new Error('It broke');
+					}
+				})
+				.catch((err) => {
 					this.setState({
-						message: 'Registration successful',
+						message: 'Login failed',
 						user: { ...initialUser }
 					});
-				}
-			});
+					console.log(err);
+				});
 		}
+		e.target.reset();
 	};
 
 	render() {
+		if (this.state.loggedIn) {
+			return <Redirect to="/" />;
+		}
 		return (
 			<div>
 				<form onSubmit={this.register}>
@@ -61,6 +79,7 @@ export default class Signin extends Component {
 					/>
 					<input type="submit" />
 				</form>
+				{this.state.message !== '' ? <h1>{this.state.message}</h1> : null}
 			</div>
 		);
 	}

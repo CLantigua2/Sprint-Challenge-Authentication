@@ -3,6 +3,7 @@ import { Route, Switch, NavLink, withRouter } from 'react-router-dom';
 import Signup from './components/Signup';
 import Signin from './components/Signin';
 import Jokes from './components/Jokes';
+// import styled from 'styled-components';
 
 import './App.css';
 
@@ -14,12 +15,15 @@ class App extends Component {
 				<nav>
 					<NavLink to="/">Home</NavLink>
 					<NavLink to="/login">Login</NavLink>
-					<NavLink to="/register">Register</NavLink>
+					<NavLink to="/signup">Register</NavLink>
 				</nav>
+
 				<Switch>
 					<Route exact path="/" render={(props) => <Jokes {...props} />} />
-					<Route exact path="/register" render={(props) => <Signup {...props} />} />
-					<Route exact path="/login" render={(props) => <Signin {...props} />} />
+
+					<Route path="/signup" render={(props) => <Signup {...props} />} />
+
+					<Route path="/login" render={(props) => <Signin {...props} />} />
 				</Switch>
 
 				{token ? (
