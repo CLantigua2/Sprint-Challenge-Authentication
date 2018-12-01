@@ -20,7 +20,7 @@ function register(req, res) {
 		.then((ids) => {
 			res.status(201).json(ids);
 		})
-		.catch((err) => res.status(204).json(err));
+		.catch((err) => res.status(400).json(err));
 }
 
 function login(req, res) {

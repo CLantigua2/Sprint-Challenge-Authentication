@@ -8,35 +8,31 @@ import Jokes from './components/Jokes';
 import './App.css';
 
 class App extends Component {
+	signout = () => {
+		localStorage.removeItem('jwt');
+		window.location.reload();
+	};
 	render() {
-		const token = localStorage.getItem('token');
 		return (
 			<div className="App">
-				<nav>
-					<NavLink to="/" exact>
-						Home
-					</NavLink>
-					&nbsp;|&nbsp;
-					<NavLink to="/login">Login</NavLink>
-					&nbsp;|&nbsp;
-					<NavLink to="/signup">Register</NavLink>
-				</nav>
-				<main>
-					<Route exact path="/" component={Jokes} />
-					<Route path="/signup" component={Signup} />
-					<Route path="/login" component={Signin} />
-				</main>
-
-				{token ? (
-					<button
-						onClick={() => {
-							localStorage.removeItem('token');
-							window.location.reload();
-						}}
-					>
-						Logout
-					</button>
-				) : null}
+				<header className="App-header">
+					<nav>
+						<NavLink to="/" exact>
+							Home
+						</NavLink>
+						&nbsp;|&nbsp;
+						<NavLink to="/jokes">Jokes</NavLink>
+						&nbsp;|&nbsp;
+						<NavLink to="/signin">Signin</NavLink>
+						&nbsp;|&nbsp;
+						<button onClick={this.signout}>Signout</button>
+					</nav>
+					<main>
+						<Route path="/" component={Signup} exact />
+						<Route path="/jokes" component={Jokes} />
+						<Route path="/signin" component={Signin} />
+					</main>
+				</header>
 			</div>
 		);
 	}

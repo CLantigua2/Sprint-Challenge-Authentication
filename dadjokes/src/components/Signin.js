@@ -3,57 +3,43 @@ import { Redirect } from 'react-router';
 import axios from 'axios';
 import styled from 'styled-components';
 
-const initialUser = {
-	username: '',
-	password: ''
-};
-
 export default class Signin extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			user: { ...initialUser },
-			message: '',
-			loggedIn: false
+			username: '',
+			password: '',
+			message: ''
 		};
 	}
 
+	// handles input change
 	changeHandler = (e) => {
 		const { name, value } = e.target;
 		this.setState({
-			user: { ...this.state.user, [name]: value }
+			[name]: value
 		});
 	};
 
+	// submit handler
 	register = (e) => {
 		e.preventDefault();
-
-		const { username, password } = this.state.user;
-		if (!username || !password) {
-			alert('Please provide a username and password');
+		const { username, password } = this.state;
+		if (username === '' || password === '') {
+			alert('username and password required');
 		} else {
+			const logLink = 'http://localhost:3300/api/login';
 			axios
-				.post('http://localhost:3300/api/login', this.state.user)
+				.post(logLink, this.state) //post username and password to the link
 				.then((res) => {
-					if (res.status === 201 && res.data) {
-						localStorage.setItem('token', res.data.token);
-						this.setState({
-							user: { ...initialUser },
-							loggedIn: true
-						});
-					} else {
-						throw new Error('It broke');
-					}
+					console.log(res.data);
+					localStorage.setItem('jwt', res.data.token);
+					this.setState({ message: `Welcome ${username}` });
 				})
 				.catch((err) => {
-					this.setState({
-						message: 'Login failed',
-						user: { ...initialUser }
-					});
-					console.log(err);
+					console.error('ERROR', err);
 				});
 		}
-		e.target.reset();
 	};
 
 	render() {
@@ -64,23 +50,27 @@ export default class Signin extends Component {
 			<div>
 				<h1>Signin</h1>
 				<StyledForm onSubmit={this.register}>
-					<label>username</label>
-					<input
-						type="text"
-						onChange={this.changeHandler}
-						name="username"
-						placeholder="username"
-						value={this.value}
-					/>
-					<label>password</label>
-					<input
-						type="text"
-						onChange={this.changeHandler}
-						name="password"
-						placeholder="password"
-						value={this.value}
-					/>
-					<input type="submit" />
+					<div>
+						<label>username</label>
+						<input
+							type="text"
+							onChange={this.changeHandler}
+							name="username"
+							placeholder="username"
+							value={this.state.username}
+						/>
+					</div>
+					<div>
+						<label>password</label>
+						<input
+							type="text"
+							onChange={this.changeHandler}
+							name="password"
+							placeholder="password"
+							value={this.state.password}
+						/>
+					</div>
+					{this.state.message === '' ? <button type="submit">Signin</button> : null}
 				</StyledForm>
 				{this.state.message !== '' ? <h1>{this.state.message}</h1> : null}
 			</div>

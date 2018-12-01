@@ -2,16 +2,12 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 
-const initialUser = {
-	username: '',
-	password: ''
-};
-
 export default class Signup extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			user: { ...initialUser },
+			username: '',
+			password: '',
 			message: ''
 		};
 	}
@@ -19,24 +15,24 @@ export default class Signup extends Component {
 	changeHandler = (e) => {
 		const { name, value } = e.target;
 		this.setState({
-			user: { ...this.state.user, [name]: value }
+			[name]: value
 		});
 	};
 
 	register = (e) => {
 		e.preventDefault();
-
-		const { username, password } = this.state.user;
+		const regLink = 'http://localhost:3300/api/register';
+		const { username, password } = this.state;
 		if (!username || !password) {
 			alert('Please provide a username and password');
 		} else {
 			axios
-				.post('http://localhost:3300/api/register', this.state.user)
+				.post(regLink, { username, password })
 				.then((res) => {
 					if (res.status === 201) {
 						this.setState({
 							message: 'Registration successful',
-							user: { ...initialUser }
+							state: { ...this.state }
 						});
 					} else {
 						throw new Error('its broken');
@@ -45,7 +41,7 @@ export default class Signup extends Component {
 				.catch((err) => {
 					this.setState({
 						message: 'Registration failed.',
-						user: { ...initialUser }
+						state: { ...this.state }
 					});
 					console.dir(err);
 				});
@@ -58,24 +54,27 @@ export default class Signup extends Component {
 			<div>
 				<h1>Signup</h1>
 				<StyledForm onSubmit={this.register}>
-					<label htmlFor="username">username</label>
-					<input
-						type="text"
-						onChange={this.changeHandler}
-						name="username"
-						placeholder="username"
-						value={this.value}
-					/>
-
-					<label htmlFor="password">password</label>
-					<input
-						type="text"
-						onChange={this.changeHandler}
-						name="password"
-						placeholder="password"
-						value={this.value}
-					/>
-					<input type="submit" />
+					<div>
+						<label htmlFor="username">username</label>
+						<input
+							type="text"
+							onChange={this.changeHandler}
+							name="username"
+							placeholder="username"
+							value={this.value}
+						/>
+					</div>
+					<div>
+						<label htmlFor="password">password</label>
+						<input
+							type="text"
+							onChange={this.changeHandler}
+							name="password"
+							placeholder="password"
+							value={this.value}
+						/>
+					</div>
+					<button type="submit">Signup</button>
 				</StyledForm>
 				{this.state.message !== '' ? <h1>{this.state.message}</h1> : null}
 			</div>

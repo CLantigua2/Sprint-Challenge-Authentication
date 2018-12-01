@@ -5,46 +5,33 @@ class Jokes extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			jokes: null,
-			loggedIn: false
+			jokes: []
 		};
 	}
-
-	authenticate = () => {
-		const token = localStorage.getItem('token');
-		const options = {
-			headers: {
-				authorization: token
-			}
-		};
-		if (token) {
-			axios
-				.get('https://safe-falls-22549.herokuapp.com/random_ten', options)
-				.then((res) => {
-					if (res.status === 200 && res.data) {
-						this.setState({ loggedIn: true, jokes: res.data });
-					} else {
-						throw new Error();
-					}
-				})
-				.catch((err) => {
-					this.props.history.push('/login');
-					console.error('ERROR!!', err);
-				});
-		} else {
-			this.props.history.push('/login');
-		}
-	};
 
 	componentDidMount = () => {
 		this.authenticate();
 	};
 
-	componentDidUpdate = (prevProps) => {
-		const { pathname } = this.props.history;
-		if (pathname === '/' && pathname !== prevProps.history.pathname) {
-			this.authenticate();
-		}
+	authenticate = () => {
+		const endpoint = 'http://localhost:3300/api/jokes';
+		const token = localStorage.getItem('jwt');
+		const options = {
+			headers: {
+				Authorization: token
+			}
+		};
+		axios
+			.get(endpoint, options)
+			.then((res) => {
+				console.log(res.data);
+				this.setState({ jokes: res.data });
+				this.props.history.push('/jokes');
+			})
+			.catch((err) => {
+				this.props.history.push('/login');
+				console.error('ERROR!!', err);
+			});
 	};
 
 	render() {
